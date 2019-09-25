@@ -1,0 +1,71 @@
+@model LibSis.Application.ViewModels.BookViewModel
+
+@{
+    ViewData["Title"] = "Edit Book";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<form id="edit">
+
+    <div id="api_response"></div>
+
+    <div class="form-horizontal">
+        <hr />
+
+        <input type="hidden" asp-for="Id" />
+
+        <div class="form-group">
+            <label asp-for="Name" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Author" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Author" class="form-control" />
+                <span asp-validation-for="Author" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save" class="btn btn-success" />
+                <a asp-action="Index" class="btn btn-info">Back to List</a>
+            </div>
+        </div>
+    </div>
+</form>
+
+
+@section Scripts {
+    <script>
+        $('form#edit').bind('submit', function (event) {
+            event.preventDefault();
+
+            var form = this;
+            var json = ConvertFormToJSON(form);
+
+            $.ajax({
+                type: "PUT",
+                url: "https://localhost:44338/api/v1/book-management",
+                data: JSON.stringify(json),
+                dataType: "json",
+                contentType: 'application/json'
+            }).done(function () {
+                $('#api_response').append('<div class="alert alert-success">'+
+                    '<button type="button" class="close" data-dismiss="alert">X</button>' +
+                    '<h3 id="msgRetorno">Book Updated!</h3>' +
+                    '</div>');
+            })
+            .fail(function (err) {
+                alert(err);
+            });
+
+            return true;
+        });
+    </script>
+}

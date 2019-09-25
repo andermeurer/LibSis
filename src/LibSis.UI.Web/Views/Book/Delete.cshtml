@@ -1,0 +1,63 @@
+@model LibSis.Application.ViewModels.BookViewModel
+
+@{
+    ViewData["Title"] = "Delete Book";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<form id="delete">
+
+    <input asp-for="Id" type="hidden" />
+
+    <h3>Are you sure you want to delete the @Model.Name?</h3>
+    <div>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.Name)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Name)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Author)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Author)
+            </dd>
+        </dl>
+
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-danger" />
+            <a asp-action="Index" class="btn btn-info">Back to List</a>
+        </div>
+    </div>
+</form>
+
+
+@section Scripts {
+    <script>
+        $('form#delete').bind('submit', function (event) {
+            event.preventDefault();
+
+            var form = this;
+            var json = ConvertFormToJSON(form);
+
+            $.ajax({
+                type: "DELETE",
+                url: "https://localhost:44338/api/v1/book-management?Id="+json.Id,
+                dataType: "json"
+            }).done(function () {
+                location = '/';
+            })
+            .fail(function (err) {
+                alert(err);
+            });
+
+            return true;
+        });
+        
+    </script>
+}
