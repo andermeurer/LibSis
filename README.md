@@ -11,7 +11,7 @@ O sistema deverá mostrar todos os livros cadastrados ordenados de forma ascende
 - .NET Core 2.2
 - JQuery
 
-### Príncipios utilizados:
+### Princípios utilizados:
 
 - Web API
 - Domain Driven Design (DDD)
